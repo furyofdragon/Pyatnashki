@@ -9,9 +9,12 @@ import java.util.Random;
 public class Pyatnashki extends JFrame {
     private JPanel panel = new JPanel(new GridLayout(4, 4, 2, 2));
     private int[][] numbers = new int[4][4];
+    
+    private int steps = 0;
+    private JMenuItem stepsMenu;
 
     public Pyatnashki() {
-        super("Pyatnashki by c0nst");
+        super("Pyatnashki by furyofdragon");
 
         setBounds(200, 200, 300, 300);
         setResizable(false);
@@ -87,6 +90,8 @@ public class Pyatnashki extends JFrame {
 
         panel.validate();
         panel.repaint();
+        
+        stepsMenu.setText("steps = " + Integer.toString(steps));
     }
 
     public boolean checkWin() {
@@ -105,6 +110,8 @@ public class Pyatnashki extends JFrame {
 
     private void createMenu() {
         JMenuBar menu = new JMenuBar();
+        
+        /*
         JMenu fileMenu = new JMenu("File");
 
         for (String fileItem : new String [] { "New", "Exit" }) {
@@ -116,7 +123,24 @@ public class Pyatnashki extends JFrame {
         fileMenu.insertSeparator(1);
 
         menu.add(fileMenu);
+        */
+        
         setJMenuBar(menu);
+        
+        JMenuItem newMenu = new JMenuItem("New game");
+        newMenu.setActionCommand("new");
+        newMenu.addActionListener(new NewMenuListener());
+        menu.add(newMenu);
+        
+        stepsMenu = new JMenuItem("steps = " + Integer.toString(steps));
+        stepsMenu.setHorizontalAlignment(SwingConstants.CENTER);
+        menu.add(stepsMenu);
+        
+        JMenuItem exitMenu = new JMenuItem("Exit");
+        exitMenu.setHorizontalAlignment(SwingConstants.TRAILING);
+        exitMenu.setActionCommand("exit");
+        exitMenu.addActionListener(new NewMenuListener());
+        menu.add(exitMenu);
     }
 
     private class NewMenuListener implements ActionListener {
@@ -127,6 +151,7 @@ public class Pyatnashki extends JFrame {
             }
             if ("new".equals(command)) {
                 generate();
+                steps = 0;
                 repaintField();
             }
         }
@@ -138,6 +163,9 @@ public class Pyatnashki extends JFrame {
             button.setVisible(false);
             String name = button.getText();
             change(Integer.parseInt(name));
+            
+            steps++;
+            repaintField();
         }
     }
 
